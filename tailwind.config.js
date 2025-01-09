@@ -5,7 +5,15 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        merri: ["Merriweather", 'serif'],
+        carme: ["Carme", 'serif'],
+        ubuntu: ["Ubuntu", 'serif'],
+        rubik: ["Rubik", 'serif'],
+      },
+    },
   },
   plugins: [],
 }
+
