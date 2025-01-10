@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaPlaneDeparture, FaPlaneArrival } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Flight = () => {
-
     const [selected, setSelected] = useState("One Way"); // Default selected button
+
+    useEffect(() => {
+        AOS.init({ duration: 800, easing: "ease-in-out" });
+    }, []);
 
     const handleButtonClick = (option) => {
         setSelected(option);
@@ -11,7 +16,11 @@ const Flight = () => {
 
     return (
         <div>
-            <div className="flex justify-center gap-6 mt-4 text-[1rem] text-gray-600">
+            {/* Button Group */}
+            <div
+                className="flex justify-center gap-6 mt-4 text-[1rem] text-gray-600"
+                data-aos="fade-up"
+            >
                 {["One Way", "Roundtrip", "Multi city"].map((option) => (
                     <button
                         key={option}
@@ -26,9 +35,18 @@ const Flight = () => {
                     </button>
                 ))}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+
+            {/* Input Cards */}
+            <div
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8"
+                data-aos="fade-up"
+            >
                 {/* From */}
-                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md">
+                <div
+                    className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md"
+                    data-aos="zoom-in"
+                    data-aos-delay="100"
+                >
                     <label className="font-semibold mb-2 text-purple-600">From</label>
                     <div className="flex items-center gap-2">
                         <FaPlaneDeparture className="text-purple-600" />
@@ -46,7 +64,11 @@ const Flight = () => {
                 </div>
 
                 {/* To */}
-                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md">
+                <div
+                    className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md"
+                    data-aos="zoom-in"
+                    data-aos-delay="150"
+                >
                     <label className="font-semibold mb-2 text-purple-600">To</label>
                     <div className="flex items-center gap-2">
                         <FaPlaneArrival className="text-purple-600" />
@@ -64,7 +86,11 @@ const Flight = () => {
                 </div>
 
                 {/* Journey Date */}
-                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md">
+                <div
+                    className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md"
+                    data-aos="zoom-in"
+                    data-aos-delay="200"
+                >
                     <label className="font-semibold mb-2 text-purple-600">Journey date</label>
                     <div className="flex items-center gap-2">
                         <input
@@ -81,7 +107,11 @@ const Flight = () => {
                 </div>
 
                 {/* Passenger Class */}
-                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md">
+                <div
+                    className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md"
+                    data-aos="zoom-in"
+                    data-aos-delay="250"
+                >
                     <label className="font-semibold mb-2 text-purple-600">Passenger, Class</label>
                     <input
                         type="text"
@@ -95,11 +125,12 @@ const Flight = () => {
                     />
                 </div>
             </div>
+
             {/* Submit Button */}
-            <div className="flex justify-center mt-6">
-            <button className="bg-purple-600 font-carme font-medium text-[1rem] text-white py-3 px-6 rounded-lg hover:bg-purple-500">
-                Search
-            </button>
+            <div className="flex justify-center mt-6" data-aos="fade-down">
+                <button className="bg-purple-600 font-carme font-medium text-[1rem] text-white py-3 px-6 rounded-lg hover:bg-purple-500">
+                    Search
+                </button>
             </div>
         </div>
     );

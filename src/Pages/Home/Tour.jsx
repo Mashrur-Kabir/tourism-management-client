@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaMapMarkedAlt, FaStar, FaUtensils, FaClock, FaChevronDown } from "react-icons/fa";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Tour = () => {
-    const [destination, setDestination] = useState("");
+    const [tourType, setTourType] = useState("");
     const [rating, setRating] = useState(4);
     const [foodPreference, setFoodPreference] = useState("Vegetarian");
     const [visitTime, setVisitTime] = useState("Moderate");
@@ -13,19 +15,27 @@ const Tour = () => {
     const foodOptions = ["Vegetarian", "Non-Vegetarian", "Vegan"];
     const visitTimeOptions = ["Low (off-season)", "Moderate", "High (peak season)"];
 
+    useEffect(() => {
+        AOS.init({
+            duration: 800,
+            easing: "ease-in-out",
+            once: true,
+        });
+    }, []);
+
     return (
         <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
-                {/* Destination */}
-                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md">
-                    <label className="font-semibold mb-2 text-purple-600">Touring Spot</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8" data-aos="fade-up">
+                {/* Tour Type */}
+                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md" data-aos="zoom-in">
+                    <label className="font-semibold mb-2 text-purple-600">Tour Type</label>
                     <div className="relative">
                         <div className="flex items-center text-2xl">
                             <input
                                 type="text"
-                                value={destination}
-                                onChange={(e) => setDestination(e.target.value)}
-                                placeholder="Set a place"
+                                value={tourType}
+                                onChange={(e) => setTourType(e.target.value)}
+                                placeholder="Set a tour type"
                                 className="bg-transparent font-rubik text-black text-2xl font-bold w-full focus:outline-none"
                             />
                             <FaMapMarkedAlt className="ml-2" />
@@ -34,7 +44,7 @@ const Tour = () => {
                 </div>
 
                 {/* Rating */}
-                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md">
+                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md" data-aos="fade-right">
                     <label className="font-semibold mb-2 text-purple-600">Rating</label>
                     <div className="flex items-center gap-2">
                         {[1, 2, 3, 4, 5].map((star) => (
@@ -50,7 +60,10 @@ const Tour = () => {
                 </div>
 
                 {/* Food Preference Dropdown */}
-                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md">
+                <div
+                    className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md"
+                    data-aos="fade-left"
+                >
                     <label className="font-semibold mb-2 text-purple-600">Food Preference</label>
                     <div className="relative flex items-center gap-3">
                         <button
@@ -85,7 +98,11 @@ const Tour = () => {
                 </div>
 
                 {/* Time of Visit Dropdown */}
-                <div className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md">
+                <div
+                    className="flex flex-col bg-purple-50 p-4 rounded-lg shadow-md"
+                    data-aos="fade-up"
+                    data-aos-delay="200"
+                >
                     <label className="font-semibold mb-2 text-purple-600">Time of Visit</label>
                     <div className="relative flex items-center gap-3">
                         <button
@@ -121,7 +138,10 @@ const Tour = () => {
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-center mt-6">
+            <div
+                className="flex justify-center mt-6"
+                data-aos="fade-down"
+            >
                 <button className="bg-purple-600 font-carme font-medium text-[1rem] text-white py-3 px-6 rounded-lg hover:bg-purple-500">
                     Search
                 </button>
