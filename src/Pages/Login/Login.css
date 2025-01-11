@@ -1,0 +1,47 @@
+/* Keyframes for left popper */
+@keyframes popper-left {
+    0% {
+        opacity: 0;
+        transform: translate(-10%, 20%) scale(0.8); /* Closer start */
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-30%, -10%) scale(1.2); /* Closer midpoint */
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -40%) scale(0.8); /* Closer end */
+    }
+}
+
+/* Keyframes for right popper */
+@keyframes popper-right {
+    0% {
+        opacity: 0;
+        transform: translate(10%, 20%) scale(0.8); /* Closer start */
+    }
+    50% {
+        opacity: 1;
+        transform: translate(30%, -10%) scale(1.2); /* Closer midpoint */
+    }
+    100% {
+        opacity: 0;
+        transform: translate(50%, -40%) scale(0.8); /* Closer end */
+    }
+}
+
+.animate-popper-left {
+    animation: popper-left 1.2s ease-out forwards;
+}
+
+.animate-popper-right {
+    animation: popper-right 1.2s ease-out forwards;
+}
+
+.pointer-events-none {
+    pointer-events: none;
+}
+
+.relative {
+    position: relative;
+}
