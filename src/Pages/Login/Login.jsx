@@ -1,17 +1,99 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { NavLink } from "react-router-dom";
 import './Login.css'
+import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
+import google from '../../assets/icons/google.png'
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPopper, setShowPopper] = useState(false);
 
+    const { logIn, signInWithGoogle } = useContext(AuthContext);
+
+    /* success swal */
+    const handleSuccessSwal = () => {
+        // SweetAlert for successful login
+        Swal.fire({
+            icon:'success',
+            title: 'Sign-In Successful',
+            text: 'Welcome back! You are now logged in.',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#4CAF50',
+        });
+        // Navigate after successful login
+        //navigate(location?.state ? location.state : '/');
+    }
+
+    /* failed swal */
+    const handleFailedSwal = (errorMessage) => {
+        // SweetAlert for failed login
+        Swal.fire({
+            icon: 'error',
+            title: 'Sign-In Failed',
+            text: errorMessage,
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#F44336',
+        });
+    }
+
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log("Logging in with", email, password);
-        // Add your login logic here
+        const form = new FormData(e.currentTarget);
+        const email = form.get('email');
+        const password = form.get('password');
+        console.log(email, password);
+
+        //login
+        logIn(email, password)
+        .then((res) => {
+            console.log('Logged in successfully', res.user);
+            handleSuccessSwal();
+        })
+        .catch((error) => {
+            console.error("Error during login:", error);
+
+            let errorMessage = "An error occurred during login.";
+
+            // Handling specific Firebase error codes
+            switch (error.code) {
+                case 'auth/user-not-found':
+                    errorMessage = 'No user found. Please make sure to register';
+                    break;
+                case 'auth/wrong-password':
+                    errorMessage = 'Incorrect password. Please try again.';
+                    break;
+                case 'auth/invalid-email':
+                    errorMessage = 'The email address is not valid.';
+                    break;
+                case 'auth/too-many-requests':
+                    errorMessage = 'Too many failed login attempts. Try again later.';
+                    break;
+                default:
+                    errorMessage = 'Login failed. Please check your credentials.';
+            }
+            handleFailedSwal(errorMessage);
+        });
+        // Clear input fields
+        e.currentTarget.reset();
     };
+
+    /* google login */
+    const handleGoogleSignIn = () => {
+        signInWithGoogle()
+        .then(res =>{
+            console.log("Login successful!");
+            console.log(res.user);
+            handleSuccessSwal();
+        })
+        .catch(err => {
+            let errorMessage = "An error occurred during login.";
+
+            console.error("Error occurred: " + err.message);
+            handleFailedSwal(errorMessage);
+        })
+    }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-purple-600 to-indigo-600">
@@ -85,6 +167,19 @@ const Login = () => {
                         Login
                     </button>
                 </form>
+
+                {/* Social Login Buttons */}
+                <div className='flex items-center justify-center mt-4 font-poppins gap-3'>
+                    <p className="font-rubik text-gray-700">or, login with</p>
+                    <button
+                        onClick={handleGoogleSignIn}
+                        type="submit"
+                        className="w-1/4 flex justify-center py-2 px-3 rounded-md shadow-sm text-sm font-medium text-gray-500 bg-gray-200 hover:bg-gray-400 hover:text-white active:scale-95"
+                        >
+                        <img className="h-6 w-6" src={google} alt="" />
+                    </button>
+                </div>
+
                 <p className="text-sm font-rubik text-center text-gray-600">
                     Don&apos;t have an account?{" "}
                     <NavLink

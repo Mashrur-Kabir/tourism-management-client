@@ -1,0 +1,27 @@
+.shiny-effect::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* Start from outside the left */
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 70%);
+    transform: skewX(-25deg);
+    opacity: 0; /* Hide the shiny line by default */
+    transition: opacity 0.2s ease-in-out;
+    z-index: 20;
+}
+
+.group:hover .shiny-effect::before {
+    animation: shine 0.7s ease-in-out forwards;
+    opacity: 1; /* Show the shiny line only during hover */
+}
+
+@keyframes shine {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}

@@ -1,13 +1,14 @@
 import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Register = () => {
-    const { createUser} = useContext(AuthContext);
+    const { createUser } = useContext(AuthContext);
 
     const handleRegister = (e) => {
         e.preventDefault();
-        // Add your registration logic here
+        // data collection from form
         const form = e.target;
         const name = form.name.value;
         const email = form.email.value;
@@ -15,6 +16,50 @@ const Register = () => {
 
         //create user in Auth
         createUser(email, password)
+        .then((result) => {
+            console.log("User created successfully", result.user);
+            //send user data to server
+            const users = {name, email}
+            return fetch("http://localhost:3000/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(users),
+            })
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log("User data sent to server:", data);
+            form.reset();
+            if(data.insertedId) {
+                // Success Alert
+                Swal.fire({
+                    title: "Success!",
+                    text: "User created successfully!",
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                });
+                } else {
+                // Error Alert
+                Swal.fire({
+                    title: "Error!",
+                    text: data.message,
+                    icon: "error",
+                    confirmButtonText: "Try Again",
+                });
+            }
+        })
+        .catch((err) => {
+            console.error("Error creating user:", err);
+            form.reset();
+            Swal.fire({
+                title: "Error!",
+                text: "Failed to create user. Please try again.",
+                icon: "error",
+                confirmButtonText: "Try Again",
+            });
+        })
     };
 
     return (
