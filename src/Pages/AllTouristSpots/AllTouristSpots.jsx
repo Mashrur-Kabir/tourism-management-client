@@ -27,7 +27,7 @@ const AllTouristSpots = () => {
         <div>
             {/* Page Header */}
             <h1 className="text-4xl mt-10 font-carme font-bold text-center text-violet-700 mb-6">
-                {["Top", "Destinations"].map((word, wordIndex) => (
+                {["All", "Tourist", "Spots"].map((word, wordIndex) => (
                     <span key={wordIndex} className="inline-block">
                         {Array.from(word).map((letter, letterIndex) => (
                             <span

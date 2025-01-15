@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const AddTourSpot = () => {
+const UpdateSpot = () => {
+  const { id } = useParams(); // Get spot ID from URL parameters (in Routes.jsx)
+  const navigate = useNavigate(); // For navigation after update
   const [formData, setFormData] = useState({
     image: "",
     tourists_spot_name: "",
@@ -16,6 +19,27 @@ const AddTourSpot = () => {
     user_name: "",
   });
 
+  // Fetch existing data for the tourist spot
+  useEffect(() => {
+    const fetchSpotData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/topSpots/${id}`);
+        const data = await response.json();
+        setFormData(data); // Pre-fill the form with existing data
+      } catch (error) {
+        console.error("Error fetching spot data:", error);
+        Swal.fire({
+          title: "Error",
+          text: "Failed to load spot data. Please try again later.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    };
+
+    fetchSpotData();
+  }, [id]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -23,66 +47,47 @@ const AddTourSpot = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-    // Add API logic here to save data
-    fetch('http://localhost:3000/tourSpots', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+    console.log("Updated Data Submitted:", formData);
+
+    fetch(`http://localhost:3000/updateSpot/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
     })
-    .then((response) => response.json())
+      .then((response) => response.json())
       .then((data) => {
-        console.log("Server response:", data);
-        if (data.insertedId) {
-          // Success Alert
+        if (data.modifiedCount > 0) {
           Swal.fire({
             title: "Success!",
-            text: "Spot added successfully!",
+            text: "Spot updated successfully!",
             icon: "success",
             confirmButtonText: "OK",
-          });
+          }).then(() => navigate("/myList")); // Redirect to the list page
         } else {
-          // Error Alert
           Swal.fire({
-            title: "Error!",
-            text: "Failed to add spot. Please try again.",
-            icon: "error",
-            confirmButtonText: "Retry",
+            title: "No Changes Made",
+            text: "The spot was not updated.",
+            icon: "info",
+            confirmButtonText: "OK",
           });
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error("Error updating spot:", error);
         Swal.fire({
-          title: "Oops!",
-          text: "Something went wrong. Please check your connection.",
+          title: "Error",
+          text: "Failed to update spot. Please try again.",
           icon: "error",
-          confirmButtonText: "Close",
-        });
-      })
-      .finally(() => {
-        // Clear the form fields no matter the outcome
-        setFormData({
-          image: "",
-          tourists_spot_name: "",
-          country_name: "",
-          location: "",
-          description: "",
-          average_cost: "",
-          seasonality: "",
-          travel_time: "",
-          total_visitors: "",
-          user_email: "",
-          user_name: "",
+          confirmButtonText: "Retry",
         });
       });
-};
+  };
 
   return (
     <div className="min-h-screen py-10 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center px-4">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl">
         <h1 className="text-3xl font-bold text-center text-violet-700 mb-6">
-          Add Tourist Spot
+          Update Tourist Spot
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Image URL */}
@@ -99,11 +104,9 @@ const AddTourSpot = () => {
             />
           </div>
 
-          {/* Tourists Spot Name */}
+          {/* Tourist Spot Name */}
           <div>
-            <label className="block font-semibold font-carme text-gray-600">
-              Tourist Spot Name
-            </label>
+            <label className="block font-semibold font-carme text-gray-600">Tourist Spot Name</label>
             <input
               type="text"
               name="tourists_spot_name"
@@ -143,27 +146,21 @@ const AddTourSpot = () => {
             />
           </div>
 
-          {/* Description */}
+          {/* Other Fields */}
           <div>
-            <label className="block font-semibold font-carme text-gray-600">
-              Short Description
-            </label>
+            <label className="block font-semibold font-carme text-gray-600">Description</label>
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Enter a short description"
+              placeholder="Enter description"
               className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
-              rows="4"
               required
             ></textarea>
           </div>
 
-          {/* Average Cost */}
           <div>
-            <label className="block font-semibold font-carme text-gray-600">
-              Average Cost (in USD)
-            </label>
+            <label className="block font-semibold font-carme text-gray-600">Average Cost</label>
             <input
               type="number"
               name="average_cost"
@@ -175,7 +172,6 @@ const AddTourSpot = () => {
             />
           </div>
 
-          {/* Seasonality */}
           <div>
             <label className="block font-semibold font-carme text-gray-600">Seasonality</label>
             <select
@@ -194,7 +190,6 @@ const AddTourSpot = () => {
             </select>
           </div>
 
-          {/* Travel Time */}
           <div>
             <label className="block font-semibold font-carme text-gray-600">Travel Time</label>
             <input
@@ -207,8 +202,7 @@ const AddTourSpot = () => {
               required
             />
           </div>
-
-          {/* Total Visitors Per Year */}
+          
           <div>
             <label className="block font-semibold font-carme text-gray-600">
               Total Visitors Per Year
@@ -224,47 +218,17 @@ const AddTourSpot = () => {
             />
           </div>
 
-          {/* User Email */}
-          <div>
-            <label className="block font-semibold font-carme text-gray-600">User Email</label>
-            <input
-              type="email"
-              name="user_email"
-              value={formData.user_email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
-              required
-            />
-          </div>
-
-          {/* User Name */}
-          <div>
-            <label className="block font-semibold font-carme text-gray-600">User Name</label>
-            <input
-              type="text"
-              name="user_name"
-              value={formData.user_name}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-500"
-              required
-            />
-          </div>
-
           {/* Submit Button */}
-          <div>
-            <button
-              type="submit"
-              className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-violet-800 focus:outline-none focus:ring-2 focus:ring-violet-500"
-            >
-              Add Tourist Spot
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 rounded-lg text-lg font-medium hover:from-purple-700 hover:to-indigo-800 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300"
+          >
+            Update Spot
+          </button>
         </form>
       </div>
     </div>
   );
 };
 
-export default AddTourSpot;
+export default UpdateSpot;

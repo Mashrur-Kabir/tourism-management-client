@@ -9,6 +9,7 @@ import SpotDetails from './../Pages/SpotDetails/SpotDetails';
 import MyList from "../Pages/MyList/MyList";
 import PrivateRoute from "./PrivateRoute";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
+import UpdateSpot from "../Pages/MyList/UpdateSpot";
 
 
 const router = createBrowserRouter([
@@ -48,6 +49,11 @@ const router = createBrowserRouter([
                 path: '/myList',
                 element: <PrivateRoute> <MyList></MyList> </PrivateRoute>,
                 loader: () => fetch(`http://localhost:3000/topSpots`)
+            },
+            {
+                path: '/updateSpot/:id',
+                element: <UpdateSpot></UpdateSpot>,
+                loader: ({params}) => fetch(`http://localhost:3000/topSpots/${params.id}`) // topSpots contains all the data. it is used here along with the URL to load the specific data with id params in UpdateSpot.jsx
             }
 
         ]

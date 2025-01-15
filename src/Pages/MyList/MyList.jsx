@@ -4,6 +4,12 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
+import del from '../../assets/icons/delete.png';
+import upd from '../../assets/icons/update.png';
+import view from '../../assets/icons/view.png'
+import { Link } from "react-router-dom";
+
 
 const MyList = () => {
     const { user, loading } = useContext(AuthContext); // Get logged-in user info from context
@@ -30,13 +36,15 @@ const MyList = () => {
           </span>
         ));
 
+    console.log(user.email);
+
     // Fetch tourist spots for the logged-in user
     useEffect(() => {
         const fetchTouristSpots = async () => {
-            if (!user) return;
-
+            if (!user || !user.email) return; // Ensure user and email exist
+    
             try {
-                const response = await fetch(`http://localhost:3000/topSpots?email=${user.email}`);
+                const response = await fetch(`http://localhost:3000/oneTopSpots?email=${user.email}`); // hitting data on endpoint
                 const data = await response.json();
                 setTouristSpots(data);
                 setIsLoading(false);
@@ -46,36 +54,54 @@ const MyList = () => {
                 setIsLoading(false);
             }
         };
-
+    
         fetchTouristSpots();
     }, [user]);
 
     // Delete tourist spot
     const handleDelete = async (id) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this spot?");
-        if (!confirmDelete) return;
-
-        try {
-            const response = await fetch(`/api/tourist-spots/${id}`, { method: "DELETE" });
-            if (response.ok) {
-                setTouristSpots(touristSpots.filter((spot) => spot._id !== id));
-                toast.success("Tourist spot deleted successfully.");
-            } else {
-                toast.error("Failed to delete the spot. Please try again.");
+        Swal.fire({
+            title: "Are you sure you want to delete this?",
+            text: "this action is irreversible!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                try {
+                    fetch(`http://localhost:3000/delSpots/${id}`, { 
+                    method: "DELETE" 
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log("Deleted spot:", data);
+                    if (data.deletedCount > 0){
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your coffee has been deleted.",
+                            icon: "success",
+                          });
+                          const remaining = touristSpots.filter((spot) => spot._id !== id);
+                          setTouristSpots(remaining);
+                    }
+                })
+                } catch (error) {
+                    console.error("Error deleting tourist spot:", error);
+                    toast.error("Failed to delete the spot. Please try again.");
+                }
             }
-        } catch (error) {
-            console.error("Error deleting tourist spot:", error);
-            toast.error("Failed to delete the spot. Please try again.");
-        }
+        })
     };
 
     // Update tourist spot (navigate to update page)
     const handleUpdate = (id) => {
-        window.location.href = `/update-tourist-spot/${id}`;
+        window.location.href = `/updateSpot/${id}`;
     };
 
     return (
-        <div className="max-w-6xl mx-auto px-6 md:px-10 pt-10 pb-14">
+        <div className="max-w-6xl mx-auto px-6 md:px-10 mt-14 mb-32">
             <h1 className="text-3xl font-rubik font-bold text-violet-700 text-center mb-6">
                 {renderAnimatedLetters("My Tourist Spots")}
             </h1>
@@ -114,16 +140,22 @@ const MyList = () => {
                                 <td className="px-6 py-4 flex items-center gap-3">
                                     <button
                                         onClick={() => handleUpdate(spot._id)}
-                                        className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-emerald-500 to-green-600 hover:from-green-600 hover:to-emerald-800 rounded-full mr-2 transition duration-300"
+                                        className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-200 to-slate-400 hover:from-green-600 hover:to-emerald-900 rounded-full mr-2 transition duration-300"
                                     >
-                                        Update
+                                        <img className="w-5 h-5" src={upd} alt="upd" />
                                     </button>
                                     <button
                                         onClick={() => handleDelete(spot._id)}
-                                        className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-500 hover:to-pink-800 rounded-full transition duration-300"
+                                        className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-200 to-slate-400 hover:from-red-500 hover:to-pink-900 rounded-full transition duration-300"
                                     >
-                                        Delete
+                                        <img className="w-5 h-5" src={del} alt="del" />
                                     </button>
+                                    <Link
+                                        to={`/details/${spot._id}`}
+                                        className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-200 to-slate-400 hover:from-yellow-600 hover:to-amber-800 rounded-full transition duration-300"
+                                    >
+                                        <img className="w-5 h-5" src={view} alt="view" />
+                                    </Link>
                                 </td>
                             </tr>
                         ))}
