@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import './Login.css'
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
@@ -12,6 +12,9 @@ const Login = () => {
 
     const { logIn, signInWithGoogle } = useContext(AuthContext);
 
+    const location = useLocation();
+    const navigate = useNavigate();
+
     /* success swal */
     const handleSuccessSwal = () => {
         // SweetAlert for successful login
@@ -23,7 +26,7 @@ const Login = () => {
             confirmButtonColor: '#4CAF50',
         });
         // Navigate after successful login
-        //navigate(location?.state ? location.state : '/');
+        navigate(location?.state ? location.state : '/');
     }
 
     /* failed swal */

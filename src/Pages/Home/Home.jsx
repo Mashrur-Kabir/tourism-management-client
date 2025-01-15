@@ -107,7 +107,7 @@ const Home = () => {
                 </div>
             </section>
 
-            <section id="why-choose-us" className="relative mt-[30rem] mb-48 z-10">
+            <section id="why-choose-us" className="relative mt-[25rem] mb-48 z-10">
                 <div className="flex gap-5 items-center justify-center md:justify-between max-w-6xl mx-auto px-4 md:px-8 lg:px-16">
                     {/* Image and Experience Badge */}
                     <div

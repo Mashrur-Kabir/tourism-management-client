@@ -63,7 +63,7 @@ const SpotDetails = () => {
         {/* Book Now Button */}
         <button
           data-aos="fade-up"
-          className="relative inline-block px-8 py-3 font-medium text-white bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg overflow-hidden group"
+          className="relative inline-block px-8 py-3 font-medium text-white bg-gradient-to-r from-pink-500 to-purple-500 rounded-lg overflow-hidden group"
         >
           <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-800 to-pink-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-in-out origin-left"></span>
           <span className="relative z-10 group-hover:text-white transition-colors duration-300 ease-out">
@@ -83,7 +83,7 @@ const SpotDetails = () => {
           <span className="font-medium">Travel Time:</span> {spot.travel_time}
         </p>
         <p className="text-gray-700 text-md mt-4 font-rubik">
-          <span className="font-medium">Total Visitors:</span>{" "}
+          <span className="font-medium">Average Visitors Per Year:</span>{" "}
           {spot.total_visitors.toLocaleString()}
         </p>
       </div>

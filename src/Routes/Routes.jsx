@@ -6,12 +6,16 @@ import Register from "../Pages/Register/Register";
 import AddTourSpot from "../Pages/addTourSpot/addTourSpot";
 import AllTouristSpots from "../Pages/AllTouristSpots/AllTouristSpots";
 import SpotDetails from './../Pages/SpotDetails/SpotDetails';
+import MyList from "../Pages/MyList/MyList";
+import PrivateRoute from "./PrivateRoute";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <Root></Root>,
+        errorElement: <ErrorPage></ErrorPage>,
         children: [
             {
                 path: "/",
@@ -28,7 +32,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/addSpot',
-                element: <AddTourSpot></AddTourSpot>,
+                element: <PrivateRoute> <AddTourSpot></AddTourSpot> </PrivateRoute> ,
             },
             {
                 path: '/allSpots',
@@ -37,9 +41,14 @@ const router = createBrowserRouter([
             },
             {
                 path: "/details/:id",
-                element: <SpotDetails />,
+                element: <PrivateRoute> <SpotDetails></SpotDetails> </PrivateRoute>,
                 loader: ({ params }) => fetch(`http://localhost:3000/topSpots/${params.id}`),
             },
+            {
+                path: '/myList',
+                element: <PrivateRoute> <MyList></MyList> </PrivateRoute>,
+                loader: () => fetch(`http://localhost:3000/topSpots`)
+            }
 
         ]
     }

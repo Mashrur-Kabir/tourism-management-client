@@ -1,10 +1,13 @@
-import { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { useContext, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
+import { ClipLoader } from "react-spinners";
 
 const Register = () => {
     const { createUser } = useContext(AuthContext);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -47,6 +50,11 @@ const Register = () => {
                     text: data.message,
                     icon: "error",
                     confirmButtonText: "Try Again",
+                }).then(() => {
+                    setIsLoading(true); // Set the loader to true after clicking OK
+                    setTimeout(() => {
+                        navigate('/login');
+                    }, 1500); // Delay for 1.5 seconds to show the loader
                 });
             }
         })
@@ -64,6 +72,13 @@ const Register = () => {
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-teal-600 to-sky-700">
+            {isLoading ? (
+                // Show loader during navigation
+                <div className="flex items-center justify-center min-h-screen">
+                    <ClipLoader color="#4CAF50" size={60} />
+                </div>
+            ) : (
+            
             <div className="relative w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
                 <h2 className="text-3xl font-bold text-center text-gray-900">Create an Account</h2>
                 <p className="text-sm font-rubik text-center text-gray-600">
@@ -132,6 +147,8 @@ const Register = () => {
                     </NavLink>
                 </p>
             </div>
+        
+            )}
         </div>
     );
 };
