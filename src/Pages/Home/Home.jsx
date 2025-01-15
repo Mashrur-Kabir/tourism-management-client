@@ -12,6 +12,13 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useLoaderData } from "react-router-dom";
 import TopSpots from "./TopSpots/TopSpots";
+import comp1 from '../../assets/icons/comp1.jpg';
+import comp2 from '../../assets/icons/comp2.jpg';
+import comp3 from '../../assets/icons/comp3.jpg';
+import comp4 from '../../assets/icons/comp4.jpg';
+import workAni from '../../assets/animation/workAni.json'
+import Lottie from "lottie-react";
+
 const Home = () => {
     const spots = useLoaderData();
     console.log("Loaded spots:", spots);
@@ -208,6 +215,61 @@ const Home = () => {
                     )}
                 </div>
             </section>
+
+            <section id="trusted-partners" className="bg-gray-100 py-16">
+                <div className="max-w-6xl mx-auto px-6 text-center">
+                    <h2
+                    className="text-4xl font-carme font-bold text-violet-900 mb-8"
+                    data-aos="fade-up"
+                    data-aos-duration="700"
+                    >
+                    Our Trusted Partners
+                    </h2>
+                    <p
+                    className="text-gray-700 mb-12 leading-relaxed text-lg font-rubik"
+                    data-aos="fade-up"
+                    data-aos-duration="900"
+                    data-aos-delay="200"
+                    >
+                    We collaborate with the best in the industry to ensure your travel experience is exceptional. Here are some of our trusted partners who help make your trips memorable.
+                    </p>
+                    <div className="flex items-center gap-5">
+                        <div
+                        className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center justify-center"
+                        data-aos="fade-up"
+                        data-aos-duration="900"
+                        >
+
+                            {/* Partner Logos */}
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <img src={comp1} alt="Partner 1" className="w-full h-auto" />
+                            </div>
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <img src={comp2} alt="Partner 2" className="w-full h-auto" />
+                            </div>
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <img src={comp3} alt="Partner 3" className="w-full h-auto" />
+                            </div>
+                            <div className="bg-white p-6 rounded-lg shadow-md">
+                                <img src={comp4} alt="Partner 4" className="w-full h-auto" />
+                            </div>
+    
+                        </div>
+                        {/* Lottie Animation */}
+                        <div className="col-span-full flex items-center justify-center mt-8"
+                             data-aos="fade-left"
+                             data-aos-duration="1100"
+                        >
+                            <Lottie
+                            animationData={workAni}
+                            loop={true}
+                            style={{ width: 250, height: 250 }}
+                            />
+                        </div>
+                    </div>
+                </div>
+            </section>
+
 
             {/* Back to Top Button */}
             <div className="fixed bottom-4 right-4 bg-gray-700 p-3 rounded-full text-white cursor-pointer hover:bg-yellow-500 transition">
