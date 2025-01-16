@@ -9,7 +9,8 @@ import del from '../../assets/icons/delete.png';
 import upd from '../../assets/icons/update.png';
 import view from '../../assets/icons/view.png'
 import { Link } from "react-router-dom";
-
+import { Tooltip } from "react-tooltip";
+import './MyList.css'
 
 const MyList = () => {
     const { user, loading } = useContext(AuthContext); // Get logged-in user info from context
@@ -110,16 +111,14 @@ const MyList = () => {
             ) : touristSpots.length > 0 ? (
                 <table className="w-full bg-white rounded-lg shadow-lg overflow-hidden">
                     <thead className="bg-gradient-to-r from-pink-700 to-purple-700 text-white">
-                        <tr className="font-rubik"
-                            data-aos="fade-up"
-                        >
+                        <tr className="font-rubik" data-aos="fade-up">
                             <th className="px-6 py-3 text-left text-sm font-medium">Name</th>
                             <th className="px-6 py-3 text-left text-sm font-medium">Location</th>
                             <th className="px-6 py-3 text-left text-sm font-medium">Average Cost</th>
                             <th className="px-6 py-3 text-left text-sm font-medium">Actions</th>
                         </tr>
                     </thead>
-                    <tbody className="">
+                    <tbody>
                         {touristSpots.map((spot, index) => (
                             <tr
                                 key={spot._id}
@@ -129,33 +128,57 @@ const MyList = () => {
                                 data-aos="fade-up"
                             >
                                 <td className="px-6 font-carme font-bold py-4 text-sm text-gray-700">
-                                    {spot.tourists_spot_name} {/* Correct field for name */}
+                                    {spot.tourists_spot_name}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-gray-600 font-carme font-bold">
-                                    {spot.location}, {spot.country_name} {/* Correct fields for location and country */}
+                                    {spot.location}, {spot.country_name}
                                 </td>
                                 <td className="px-6 py-4 text-sm text-gray-600 font-carme font-bold">
-                                    ${spot.average_cost} {/* Correct field for average cost */}
+                                    ${spot.average_cost}
                                 </td>
                                 <td className="px-6 py-4 flex items-center gap-3">
                                     <button
+                                        data-tooltip-id="updateTooltip"
+                                        data-tooltip-content="Update spot"
                                         onClick={() => handleUpdate(spot._id)}
                                         className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-200 to-slate-400 hover:from-green-600 hover:to-emerald-900 rounded-full mr-2 transition duration-300"
                                     >
                                         <img className="w-5 h-5" src={upd} alt="upd" />
                                     </button>
                                     <button
+                                        data-tooltip-id="deleteTooltip"
+                                        data-tooltip-content="Delete spot"
                                         onClick={() => handleDelete(spot._id)}
                                         className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-200 to-slate-400 hover:from-red-500 hover:to-pink-900 rounded-full transition duration-300"
                                     >
                                         <img className="w-5 h-5" src={del} alt="del" />
                                     </button>
                                     <Link
+                                        data-tooltip-id="viewTooltip"
+                                        data-tooltip-content="View details"
                                         to={`/details/${spot._id}`}
                                         className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-gray-200 to-slate-400 hover:from-yellow-600 hover:to-amber-800 rounded-full transition duration-300"
                                     >
                                         <img className="w-5 h-5" src={view} alt="view" />
                                     </Link>
+                                    <Tooltip 
+                                        id="updateTooltip" 
+                                        className="custom-tooltip" 
+                                        place="top" 
+                                        effect="solid" 
+                                        />
+                                    <Tooltip 
+                                        id="deleteTooltip" 
+                                        className="custom-tooltip" 
+                                        place="top" 
+                                        effect="solid" 
+                                    />
+                                    <Tooltip 
+                                        id="viewTooltip" 
+                                        className="custom-tooltip" 
+                                        place="top" 
+                                        effect="solid" 
+                                    />
                                 </td>
                             </tr>
                         ))}
@@ -171,3 +194,4 @@ const MyList = () => {
 export default MyList;
 
 
+// tippy.js as an alt for tooltips

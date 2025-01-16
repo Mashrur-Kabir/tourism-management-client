@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom"; // Assuming Link is from react-router-dom
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import { useEffect } from "react";
-const AllSpotHere = ({ spot }) => {
+import { Typewriter } from "react-simple-typewriter";
 
+const AllSpotHere = ({ spot }) => {
     useEffect(() => {
         AOS.init({ duration: 500, once: true });
-      }, []);
+    }, []);
 
     return (
         <div className="pb-10">
@@ -30,7 +31,15 @@ const AllSpotHere = ({ spot }) => {
                 {/* Content Section */}
                 <div className="p-4 flex-grow flex flex-col">
                     <h3 className="text-lg font-rubik font-semibold text-gray-800">
-                        {spot.tourists_spot_name}
+                    <Typewriter
+                        words={[spot.tourists_spot_name]}
+                        loop={true}
+                        cursor
+                        cursorStyle="_"
+                        typeSpeed={100} // Slower typing speed
+                        deleteSpeed={80} // Slower deletion speed
+                        delaySpeed={1500} // pause before restarting
+                    />
                     </h3>
                     <p className="text-sm text-gray-500 mb-3 font-ubuntu">
                         {spot.location}, {spot.country_name}
