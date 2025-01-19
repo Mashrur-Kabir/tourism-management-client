@@ -25,7 +25,7 @@ const AddTourSpot = () => {
     e.preventDefault();
     console.log("Form Data Submitted:", formData);
     // Add API logic here to save data
-    fetch('http://localhost:3000/tourSpots', {
+    fetch('https://tourism-management-server-gray.vercel.app/tourSpots', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

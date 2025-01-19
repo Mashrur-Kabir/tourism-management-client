@@ -21,7 +21,7 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <Home></Home>,
-                loader: () => fetch("http://localhost:3000/topSpots")
+                loader: () => fetch("https://tourism-management-server-gray.vercel.app/topSpots")
             },
             {
                 path: '/login',
@@ -38,22 +38,22 @@ const router = createBrowserRouter([
             {
                 path: '/allSpots',
                 element: <AllTouristSpots></AllTouristSpots>,
-                loader: () => fetch("http://localhost:3000/topSpots")
+                loader: () => fetch("https://tourism-management-server-gray.vercel.app/topSpots")
             },
             {
                 path: "/details/:id",
                 element: <PrivateRoute> <SpotDetails></SpotDetails> </PrivateRoute>,
-                loader: ({ params }) => fetch(`http://localhost:3000/topSpots/${params.id}`),
+                loader: ({ params }) => fetch(`https://tourism-management-server-gray.vercel.app/topSpots/${params.id}`),
             },
             {
                 path: '/myList',
                 element: <PrivateRoute> <MyList></MyList> </PrivateRoute>,
-                loader: () => fetch(`http://localhost:3000/topSpots`)
+                loader: () => fetch(`https://tourism-management-server-gray.vercel.app/topSpots`)
             },
             {
                 path: '/updateSpot/:id',
                 element: <UpdateSpot></UpdateSpot>,
-                loader: ({params}) => fetch(`http://localhost:3000/topSpots/${params.id}`) // topSpots contains all the data. it is used here along with the URL to load the specific data with id params in UpdateSpot.jsx
+                loader: ({params}) => fetch(`https://tourism-management-server-gray.vercel.app/topSpots/${params.id}`) // topSpots contains all the data. it is used here along with the URL to load the specific data with id params in UpdateSpot.jsx
             }
 
         ]

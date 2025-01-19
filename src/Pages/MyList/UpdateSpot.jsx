@@ -23,7 +23,9 @@ const UpdateSpot = () => {
   useEffect(() => {
     const fetchSpotData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/topSpots/${id}`);
+        const response = await fetch(
+          `https://tourism-management-server-gray.vercel.app/topSpots/${id}`
+        );
         const data = await response.json();
         setFormData(data); // Pre-fill the form with existing data
       } catch (error) {
@@ -49,11 +51,14 @@ const UpdateSpot = () => {
     e.preventDefault();
     console.log("Updated Data Submitted:", formData);
 
-    fetch(`http://localhost:3000/updateSpot/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    })
+    fetch(
+      `https://tourism-management-server-gray.vercel.app/updateSpot/${id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (data.modifiedCount > 0) {
@@ -92,7 +97,9 @@ const UpdateSpot = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Image URL */}
           <div>
-            <label className="block font-semibold font-carme text-gray-600">Image URL</label>
+            <label className="block font-semibold font-carme text-gray-600">
+              Image URL
+            </label>
             <input
               type="url"
               name="image"
@@ -106,7 +113,9 @@ const UpdateSpot = () => {
 
           {/* Tourist Spot Name */}
           <div>
-            <label className="block font-semibold font-carme text-gray-600">Tourist Spot Name</label>
+            <label className="block font-semibold font-carme text-gray-600">
+              Tourist Spot Name
+            </label>
             <input
               type="text"
               name="tourists_spot_name"
@@ -120,7 +129,9 @@ const UpdateSpot = () => {
 
           {/* Country Name */}
           <div>
-            <label className="block font-semibold font-carme text-gray-600">Country Name</label>
+            <label className="block font-semibold font-carme text-gray-600">
+              Country Name
+            </label>
             <input
               type="text"
               name="country_name"
@@ -134,7 +145,9 @@ const UpdateSpot = () => {
 
           {/* Location */}
           <div>
-            <label className="block font-semibold font-carme text-gray-600">Location</label>
+            <label className="block font-semibold font-carme text-gray-600">
+              Location
+            </label>
             <input
               type="text"
               name="location"
@@ -148,7 +161,9 @@ const UpdateSpot = () => {
 
           {/* Other Fields */}
           <div>
-            <label className="block font-semibold font-carme text-gray-600">Description</label>
+            <label className="block font-semibold font-carme text-gray-600">
+              Description
+            </label>
             <textarea
               name="description"
               value={formData.description}
@@ -160,7 +175,9 @@ const UpdateSpot = () => {
           </div>
 
           <div>
-            <label className="block font-semibold font-carme text-gray-600">Average Cost</label>
+            <label className="block font-semibold font-carme text-gray-600">
+              Average Cost
+            </label>
             <input
               type="number"
               name="average_cost"
@@ -173,7 +190,9 @@ const UpdateSpot = () => {
           </div>
 
           <div>
-            <label className="block font-semibold font-carme text-gray-600">Seasonality</label>
+            <label className="block font-semibold font-carme text-gray-600">
+              Seasonality
+            </label>
             <select
               name="seasonality"
               value={formData.seasonality}
@@ -191,7 +210,9 @@ const UpdateSpot = () => {
           </div>
 
           <div>
-            <label className="block font-semibold font-carme text-gray-600">Travel Time</label>
+            <label className="block font-semibold font-carme text-gray-600">
+              Travel Time
+            </label>
             <input
               type="text"
               name="travel_time"
@@ -202,7 +223,7 @@ const UpdateSpot = () => {
               required
             />
           </div>
-          
+
           <div>
             <label className="block font-semibold font-carme text-gray-600">
               Total Visitors Per Year
